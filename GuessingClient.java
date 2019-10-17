@@ -30,7 +30,6 @@ class GuessingClient {
         }
 
         OutputStream outStream;
-        InputStream inStream;
         try{
             outStream = clientSocket.getOutputStream();
             inStream = clientSocket.getInputStream();
@@ -45,7 +44,7 @@ class GuessingClient {
         }
 
         try{
-            outStream.write(new String(argv[1] +" "+ argv[2] + "\n\r").getBytes());
+            outStream.write(new String(argv[1] +" "+ 2012 + "\r\n").getBytes());
             outStream.flush();
         }catch(IOException e){
             System.out.println("ERROR : Data streams could not be sent to tester server");
