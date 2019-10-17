@@ -9,6 +9,7 @@ class GuessingClient {
             return;
         }
         Socket clientSocket;
+
         try{
             clientSocket = new Socket("localhost", Integer.parseInt(argv[2]));
         }catch( Exception e){
@@ -20,7 +21,11 @@ class GuessingClient {
             clientSocket.setTcpNoDelay(true);
         }catch(SocketException e){
             System.out.println("ERROR : socket could not be set to no delay mode");
-            clientSocket.close();
+            try{
+                clientSocket.close();
+            }catch(IOException s){
+                s.printStackTrace();
+            }
             return;
         }
 
@@ -29,47 +34,70 @@ class GuessingClient {
         try{
             outStream = clientSocket.getOutputStream();
             inStream = clientSocket.getInputStream();
-        } catch(IOException e){
+        }catch(IOException e){
             System.out.println("ERROR : Data streams could not be initialized");
-            clientSocket.close();
+            try{
+                clientSocket.close();
+            }catch(IOException s){
+                s.printStackTrace();
+            }
             return;
         }
 
         try{
-            outStream.write(new String(argv[1] + argv[2] + "\n\r").getBytes());
+            outStream.write(new String(argv[1] +" "+ argv[2] + "\n\r").getBytes());
             outStream.flush();
         }catch(IOException e){
             System.out.println("ERROR : Data streams could not be sent to tester server");
-            clientSocket.close();
+            try{
+                clientSocket.close();
+            }catch(IOException s){
+                s.printStackTrace();
+            }
             return;
         }
 
         BufferedReader socketReader;
         try{
             socketReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-        }
-        catch(IllegalArgumentException e){
+        }catch(IllegalArgumentException | IOException e){
             System.out.println("ERROR : readBuffer could not be initialized");
-            clientSocket.close();
+            try{
+                clientSocket.close();
+            }catch(IOException s){
+                s.printStackTrace();
+            }
             return;
         }
         String message;
         try{
             message = socketReader.readLine();
-        }
-        catch(IOException IOe){
+        }catch(IOException e){
             System.out.println("ERROR : network message could not be read");
-            clientSocket.close();
+            try{
+                clientSocket.close();
+            }catch(IOException s){
+                s.printStackTrace();
+            }
             return;
         }
 
-        if(! message.equals("OK\n\r")){
+        if(! message.equals("OK")){
             System.out.println("ERROR : connection to tester could not be established");
+            try{
+                clientSocket.close();
+            }catch(IOException s){
+                s.printStackTrace();
+            }
+            return;
         }
         
         System.out.println("Connection to tester was established");
-        clientSocket.close();
+        try{
+            clientSocket.close();
+        }catch(IOException s){
+            s.printStackTrace();
+        }
+        return;
     }
-
 }
