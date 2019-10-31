@@ -18,7 +18,7 @@ class GuessingGame extends Thread {
     public void run() {
 
         /*
-        Disables Nagel's algorithm and
+        Disables Nagle's algorithm and
         gets the output and input streams of the assigned socket
         */
         OutputStream gameOutStream;

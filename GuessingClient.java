@@ -10,17 +10,18 @@ class GuessingClient {
         */
         if (argv.length != 3) {
             System.out.println("Wrong number of arguments given," + argv.length + "were given but 3 are expected.");
+            System.out.println("correct use: java GuessingClient IPServer IPTester PortTester");
             return;
         }
 
         /*
         Initialize the user socket using the socket given as the third argument of the program
-        Disables Nagel's algorithm and get the output stream of the initialized socket
+        Disables Nagle's algorithm and get the output stream of the initialized socket
         */
         Socket clientSocket = null;
         OutputStream outStream;
         try {
-            clientSocket = new Socket("localhost", Integer.parseInt(argv[2]));
+            clientSocket = new Socket(InetAddress.getByName(argv[1]), Integer.parseInt(argv[2]));
             clientSocket.setTcpNoDelay(true);
             outStream = clientSocket.getOutputStream();
         } catch (IOException e) {
@@ -40,7 +41,7 @@ class GuessingClient {
         to establish connection with the game server  
         */
         try {
-            outStream.write(new String(argv[1] + " " + 2012 + "\r\n").getBytes());
+            outStream.write(new String(argv[0] + " " + 2639 + "\r\n").getBytes());
             outStream.flush();
         } catch (IOException e) {
             System.out.println("ERROR : Data streams could not be sent to tester server");
