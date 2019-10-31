@@ -18,7 +18,7 @@ class GuessingGame extends Thread {
     public void run() {
 
         /*
-        Dissables nagel's algorithm and
+        Disables Nagel's algorithm and
         gets the output and input streams of the assigned socket
         */
         OutputStream gameOutStream;
@@ -48,29 +48,32 @@ class GuessingGame extends Thread {
         }
 
         /*
-        Start 
+        Starts the guessing game loop
         */
         String message;
         String output;
         while (true) {
             try {
-
-                message = socketReader.readLine();
+                /*
+                  reads the message from the client,
+                  if the connection was closed, null is received and socket is closed
+                */
+                 message = socketReader.readLine();
                 if (message == null) {
                     this.closeGameSocket();
                     return;
                 }
 
+                //handles the guess message and outputs a response
                 output = handleInput(message);
                 if (output == null) {
                     this.closeGameSocket();
                     return;
                 }
-                System.out.println(message);
-                System.out.println(output);
                 gameOutStream.write(output.getBytes());
                 gameOutStream.flush();
-
+                
+                //if the output message signalled that the client wins, close socket
                 if (output.equals("CORRECT\r\n")) {
                     this.closeGameSocket();
                     return;
@@ -84,25 +87,30 @@ class GuessingGame extends Thread {
         }
     }
 
-    String handleInput(String message) {
+    private String handleInput(String message) {
+        //ensure input is not null
         if (message == null) {
             return null;
         }
-
+        //split the message into words
         String[] words = message.split(" ");
         if (words.length <= 0) {
             return "WRONG\r\n";
         }
 
+        //handle the first word of the message
         switch (words[0]) {
             case "TRY":
+                //if the key word is "try" but without a number, return wrong
                 if (words.length != 2) {
                     return "WRONG\r\n";
                 }
+                //parse the number to an integer and check its validity
                 Integer number = Integer.parseInt(words[1]);
                 if (number < 0 || number > 20) {
                     return "WRONG\r\n";
                 } else {
+                    //if valid give a hint or send answer validation
                     if (number < randomNo) {
                         return "HIGHER\r\n";
                     }
@@ -124,6 +132,7 @@ class GuessingGame extends Thread {
         return "WRONG\r\n";
     }
 
+    //Closes the game socket and handles the possible error
     private void closeGameSocket() {
         try {
             this.gameSocket.close();

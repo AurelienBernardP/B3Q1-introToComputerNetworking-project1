@@ -6,7 +6,7 @@ class GuessingServer {
     public static void main(String argv[]) {
 
         
-        //Initilialize the port that will be used to listen to new connections
+        //Initializes the port that will be used to listen to new connections
         ServerSocket listeningSocket;
         int listeningPort = 2012;
         try {
@@ -15,9 +15,9 @@ class GuessingServer {
             e.printStackTrace();
             return;
         }
-        System.out.println("Listening for connetions on port " + listeningPort+ " ...");
+        System.out.println("Listening for connexions on port " + listeningPort+ " ...");
 
-        //Infinite loop used to listen for new connections and assing them a socket and thread
+        //Infinite loop used to listen for new connections and assigning them a socket and thread
         Socket gameSocket;
         GuessingGame gameWorker;
         while (true) {

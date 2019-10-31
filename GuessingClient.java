@@ -6,7 +6,7 @@ class GuessingClient {
 
         /*
         check if the number of arguments is correct,
-        send a message to the user and close programm if inccorectly used
+        send a message to the user and close program if incorrectly used
         */
         if (argv.length != 3) {
             System.out.println("Wrong number of arguments given," + argv.length + "were given but 3 are expected.");
@@ -15,7 +15,7 @@ class GuessingClient {
 
         /*
         Initialize the user socket using the socket given as the third argument of the program
-        Dissable nagel's algorithm and get the output stream of the initialized socket
+        Disables Nagel's algorithm and get the output stream of the initialized socket
         */
         Socket clientSocket = null;
         OutputStream outStream;
@@ -72,7 +72,7 @@ class GuessingClient {
         }
 
         
-        //Read the message from the tester server confirming the message is well recieved
+        //Read the message from the tester server confirming the message is well received
         if (!message.equals("OK")) {
             System.out.println("ERROR : connection to tester could not be established");
         }else{
