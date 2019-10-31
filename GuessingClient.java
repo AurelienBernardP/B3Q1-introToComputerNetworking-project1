@@ -3,14 +3,22 @@ import java.net.*;
 
 class GuessingClient {
     public static void main(String argv[]) {
+
+        /*
+        check if the number of arguments is correct,
+        send a message to the user and close programm if inccorectly used
+        */
         if (argv.length != 3) {
             System.out.println("Wrong number of arguments given," + argv.length + "were given but 3 are expected.");
             return;
         }
 
+        /*
+        Initialize the user socket using the socket given as the third argument of the program
+        Dissable nagel's algorithm and get the output stream of the initialized socket
+        */
         Socket clientSocket = null;
         OutputStream outStream;
-
         try {
             clientSocket = new Socket("localhost", Integer.parseInt(argv[2]));
             clientSocket.setTcpNoDelay(true);
@@ -27,6 +35,10 @@ class GuessingClient {
             return;
         }
 
+        /*
+        write on the network output stream the necessary data for the tester server
+        to establish connection with the game server  
+        */
         try {
             outStream.write(new String(argv[1] + " " + 2012 + "\r\n").getBytes());
             outStream.flush();
@@ -40,6 +52,10 @@ class GuessingClient {
             return;
         }
 
+        /*
+        Write on the network output stream the necessary data for the tester server
+        to establish connection with the game server  
+        */
         BufferedReader socketReader;
         String message;
         try {
@@ -55,12 +71,14 @@ class GuessingClient {
             return;
         }
 
+        
+        //Read the message from the tester server confirming the message is well recieved
         if (!message.equals("OK")) {
             System.out.println("ERROR : connection to tester could not be established");
         }else{
             System.out.println("Connection to tester was established");
         }
-
+        //close socket
         try {
             clientSocket.close();
         } catch (IOException s) {

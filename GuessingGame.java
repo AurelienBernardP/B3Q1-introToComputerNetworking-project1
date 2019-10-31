@@ -4,9 +4,10 @@ import java.util.Random;
 
 class GuessingGame extends Thread {
 
-    private Socket gameSocket;
-    private int randomNo;
-    static final int TIMEOUTTIME = 1000 * 15; // set to 15 seconds
+    private Socket gameSocket; // server socket assigned for this thread
+    private int randomNo; // random number to be found by the client to win the game
+    static final int TIMEOUTTIME = 1000 * 15; //server timeout time, set to 15 seconds
+
 
     GuessingGame(Socket givenSocket) {
         gameSocket = givenSocket;
@@ -16,9 +17,12 @@ class GuessingGame extends Thread {
     @Override
     public void run() {
 
+        /*
+        Dissables nagel's algorithm and
+        gets the output and input streams of the assigned socket
+        */
         OutputStream gameOutStream;
         InputStream gameInStream;
-
         try {
             gameOutStream = gameSocket.getOutputStream();
             gameInStream = gameSocket.getInputStream();
@@ -31,6 +35,8 @@ class GuessingGame extends Thread {
             return;
         }
 
+        
+        //Initialize buffered reader from the previously obtained input stream
         BufferedReader socketReader;
         try {
             socketReader = new BufferedReader(new InputStreamReader(gameInStream));
@@ -41,6 +47,9 @@ class GuessingGame extends Thread {
             return;
         }
 
+        /*
+        Start 
+        */
         String message;
         String output;
         while (true) {
