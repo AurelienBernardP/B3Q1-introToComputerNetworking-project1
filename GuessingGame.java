@@ -6,7 +6,7 @@ class GuessingGame extends Thread {
 
     private Socket gameSocket; // server socket assigned for this thread
     private int randomNo; // random number to be found by the client to win the game
-    static final int TIMEOUTTIME = 1000 * 15; //server timeout time, set to 15 seconds
+    static final int TIMEOUTTIME = 1000 * 30; //server timeout time, set to 30 seconds
 
 
     GuessingGame(Socket givenSocket) {
@@ -47,9 +47,8 @@ class GuessingGame extends Thread {
             return;
         }
 
-        /*
-        Starts the guessing game loop
-        */
+        
+        //The guessing game loop starts
         String message;
         String output;
         while (true) {
@@ -87,6 +86,10 @@ class GuessingGame extends Thread {
         }
     }
 
+    /*
+    Given an input string it handles the input and returns the appropriate return string.
+    null is returned if the input message is null.
+    */    
     private String handleInput(String message) {
         //ensure input is not null
         if (message == null) {

@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 class GuessingServer {
     public static void main(String argv[]) {
